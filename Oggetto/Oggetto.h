@@ -1,0 +1,14 @@
+//
+// Created by pucci on 04/06/2024.
+//
+
+#ifndef LABORATORIO_PROGRAMMAZIONE_OGGETTO_H
+#define LABORATORIO_PROGRAMMAZIONE_OGGETTO_H
+
+
+class Oggetto {
+
+};
+
+
+#endif //LABORATORIO_PROGRAMMAZIONE_OGGETTO_H

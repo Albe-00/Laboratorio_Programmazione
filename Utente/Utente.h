@@ -1,0 +1,14 @@
+//
+// Created by pucci on 04/06/2024.
+//
+
+#ifndef LABORATORIO_PROGRAMMAZIONE_UTENTE_H
+#define LABORATORIO_PROGRAMMAZIONE_UTENTE_H
+
+
+class Utente {
+
+};
+
+
+#endif //LABORATORIO_PROGRAMMAZIONE_UTENTE_H
