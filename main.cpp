@@ -1,8 +1,9 @@
-#include "ListaSpesa/ListaSpesa.h"
+#include "Utente/Utente.h"
 
 int main() {
 
     //TEST CLASSE OGGETTO
+
     auto og1 = new Oggetto("Nutella", "dolce", -2);
     auto og2 = new Oggetto("Pane", "Cibo", 2);
 
@@ -18,12 +19,14 @@ int main() {
 
 
     //TEST CLASSE LISTASPESA
+
     auto lista1 = new ListaSpesa("Lista1");
     auto lista2 = new ListaSpesa("Lista2");
     lista1->aggiungiOggetto(og1);
     lista1->aggiungiOggetto(og1);
     lista1->aggiungiOggetto(og2);
-    lista1->aggiungiOggetto();
+
+    /*lista1->aggiungiOggetto();
 
     system("cls");
     cout<<*lista1;
@@ -41,7 +44,62 @@ int main() {
     lista1->rimuoviOggetto();
 
     cout<<*lista1;
+    system("pause");*/
+
+
+    //TEST CLASSE UTENTE
+
+    auto utente1 = new Utente("Alberto");
+    auto utente2 = new Utente("Vittoria");
+    auto utente3 = new Utente("Giorgio");
+
+    utente1->aggiungiLista(*lista1);
+    utente1->aggiungiLista(*lista2);
+
+    utente2->aggiungiLista(*lista1);
+
+    utente3->aggiungiLista(*lista1);
+    utente3->aggiungiLista(*lista2);
+
+    utente1->compraOggetto();
+
+    cout<<*utente1;
     system("pause");
+    system("cls");
+
+    utente1->creaLista();
+
+    cout<<*utente1;
+    system("pause");
+    system("cls");
+
+    utente1->aggiungiOggettoALista();
+
+    cout<<*utente1;
+    system("pause");
+    system("cls");
+
+    utente1->condividiLista(utente2);
+
+    cout<<*utente1<<*utente2;
+    system("pause");
+    system("cls");
+
+    utente1->aggiungiOggettoALista();
+
+    cout<<*utente1<<*utente2;
+    system("pause");
+    system("cls");
+
+    utente1->cancellaOggettoDaLista();
+
+    cout<<*utente1<<*utente2;
+    system("pause");
+    system("cls");
+
+    utente1->rimuoviLista();
+
+    cout<<*utente1<<*utente2;
 
 
     return 0;
