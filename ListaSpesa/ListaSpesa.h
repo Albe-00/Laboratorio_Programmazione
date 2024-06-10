@@ -21,6 +21,7 @@ public:
     const string &getNome() const{ return nomeLista;};
 
     const int getDaComprare() const { return daComprare; }
+    const int getObservers() const { return observers.size(); }
 
     friend std::ostream& operator<<(ostream& os, const ListaSpesa& lista);
 

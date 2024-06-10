@@ -3,4 +3,21 @@ project(Laboratorio_Programmazione)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Laboratorio_Programmazione main.cpp Oggetto/Oggetto.cpp Oggetto/Oggetto.h ListaSpesa/ListaSpesa.cpp ListaSpesa/ListaSpesa.h ObserverPattern/Observer.h ObserverPattern/Subject.h Utente/Utente.cpp Utente/Utente.h)
+add_subdirectory(test)
+
+set( SOURCE_FILES
+        ObserverPattern/Subject.h
+        ObserverPattern/Observer.h
+        Oggetto/Oggetto.cpp
+        Oggetto/Oggetto.h
+        ListaSpesa/ListaSpesa.cpp
+        ListaSpesa/ListaSpesa.h
+        Utente/Utente.cpp
+        Utente/Utente.h
+        )
+
+add_executable(Laboratorio_Programmazione main.cpp)
+
+add_library(core ${SOURCE_FILES})
+
+target_link_libraries(Laboratorio_Programmazione core)
