@@ -34,12 +34,22 @@ TEST_F(TestListaSpesa, TestAggiungiOggetto) {
     ASSERT_EQ(lista1.getObservers(),1);
 }
 
-TEST_F(TestListaSpesa, TestCompraOggetto) {
-    Utente utente1("Alberto");
-    lista1.subscribe(&utente1);
-    lista1.compraOggetto(&og1);    //5-2=3
-    ASSERT_EQ(lista1.getDaComprare(),3);
-    ASSERT_EQ(lista1.getObservers(),1);
+TEST_F(TestListaSpesa, TestAggiungiOggettoSenzaParamentri) {
+    // Simula l'input dell'utente
+    std::istringstream input("Pane\nCibo\n3\n");
+    int expectedDaComprare = lista1.getDaComprare()+3;
+
+    // Chiama la funzione con lo stream simulato
+    lista1.aggiungiOggettoInputStream(input);
+
+    // Verifica che l'oggetto sia stato aggiunto correttamente
+    auto oggetti = lista1.getOggetti();
+    auto last = oggetti.back();
+    ASSERT_EQ(lista1.getDaComprare(), expectedDaComprare);
+    EXPECT_EQ(last->getNome(), "Pane");
+    EXPECT_EQ(last->getCategoria(), "Cibo");
+    EXPECT_EQ(last->getQuantita(), 3);
+
 }
 
 TEST_F(TestListaSpesa, TestRimuoviOggetto) {
@@ -50,7 +60,38 @@ TEST_F(TestListaSpesa, TestRimuoviOggetto) {
     ASSERT_EQ(lista1.getObservers(),1);
 }
 
+TEST_F(TestListaSpesa, TestRimuoviOggettoSenzaParamentri) {
+    // Simula l'input dell'utente
+    std::istringstream input("Pane");
+    int expectedDaComprare = lista1.getDaComprare()-2;
 
+    // Chiama la funzione con lo stream simulato
+    lista1.rimuoviOggettoInputStream(input);
+
+    ASSERT_EQ(lista1.getDaComprare(), expectedDaComprare);
+
+}
+
+TEST_F(TestListaSpesa, TestCompraOggetto) {
+    Utente utente1("Alberto");
+    lista1.subscribe(&utente1);
+    lista1.compraOggetto(&og1);    //5-2=3
+    ASSERT_EQ(lista1.getDaComprare(),3);
+    ASSERT_EQ(lista1.getObservers(),1);
+}
+
+TEST_F(TestListaSpesa, TestCompraOggettoSenzaParamentri) {
+
+    // Simula l'input dell'utente
+    std::istringstream input("Pane");
+    int expectedDaComprare = lista1.getDaComprare()-2;      //5-2=3
+
+    // Chiama la funzione con lo stream simulato
+    lista1.compraOggettoInputStream(input);
+
+    ASSERT_EQ(lista1.getDaComprare(), expectedDaComprare);
+
+}
 
 TEST_F(TestListaSpesa, TestObservers) {
     Utente utente1("Alberto");
@@ -63,3 +104,5 @@ TEST_F(TestListaSpesa, TestObservers) {
     lista1.unsubscribe(&utente2);
     ASSERT_EQ(lista1.getObservers(),0);
 }
+
+

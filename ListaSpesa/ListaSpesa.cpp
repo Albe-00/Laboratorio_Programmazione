@@ -72,7 +72,7 @@ void ListaSpesa::compraOggetto(Oggetto *oggetto) {
     cout<<"Oggetto non trovato"<<endl;
 }
 
-
+//funzioni senza parametri
 
 void ListaSpesa::aggiungiOggetto() {
     string nome;
@@ -86,6 +86,22 @@ void ListaSpesa::aggiungiOggetto() {
     cin>>quantita;
     auto oggetto = new Oggetto(nome, categoria, quantita);
     aggiungiOggetto(oggetto);
+}
+
+void ListaSpesa::aggiungiOggettoInputStream(std::istream &input) {
+    std::string nome;
+    std::string categoria;
+    int quantita;
+    std::cout << "Inserisci il nome dell'oggetto: ";
+    input >> nome;
+    std::cout << "Inserisci la categoria dell'oggetto: ";
+    input >> categoria;
+    std::cout << "Inserisci la quantita dell'oggetto: ";
+    input >> quantita;
+    auto oggetto = new Oggetto(nome, categoria, quantita);
+    oggettiDellaLista.push_back(oggetto);
+    daComprare+=quantita;
+    notify();
 }
 
 void ListaSpesa::rimuoviOggetto() {
@@ -105,10 +121,43 @@ void ListaSpesa::rimuoviOggetto() {
     return;
 }
 
+void ListaSpesa::rimuoviOggettoInputStream(std::istream &input) {
+    std::string nome;
+    std::cout << "Inserisci il nome dell'oggetto da rimuovere: ";
+    input >> nome;
+    for (auto oggetto: oggettiDellaLista) {
+        if (oggetto->getNome() == nome) {
+            oggettiDellaLista.remove(oggetto);
+            daComprare -= oggetto->getQuantita();
+            notify();
+            return;
+        }
+    }
+    std::cout << "Oggetto non trovato" << std::endl;
+    return;
+}
+
 void ListaSpesa::compraOggetto() {
     string nome;
     cout << "Inserisci il nome dell'oggetto da comprare: ";
     cin >> nome;
+    for (auto oggetto: oggettiDellaLista) {
+        if (oggetto->getNome() == nome) {
+            oggetto->setComprato(true);
+            daComprare -= oggetto->getQuantita();
+            notify();
+            cout << "Oggetto comprato" << endl;
+            return;
+        }
+    }
+    cout << "Oggetto non trovato" << endl;
+    return;
+}
+
+void ListaSpesa::compraOggettoInputStream(std::istream &input) {
+    string nome;
+    cout << "Inserisci il nome dell'oggetto da comprare: ";
+    input >> nome;
     for (auto oggetto: oggettiDellaLista) {
         if (oggetto->getNome() == nome) {
             oggetto->setComprato(true);
