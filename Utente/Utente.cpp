@@ -3,11 +3,13 @@
 //
 
 #include "Utente.h"
+#include <sstream>
 
 Utente::~Utente() {
     for(auto it = liste.begin(); it!=liste.end(); it++){
         it->second->unsubscribe(this);
     }
+    liste.clear();
 }
 
 void Utente::update(const std::string listName, int oggettiMancanti) {
@@ -17,90 +19,52 @@ void Utente::update(const std::string listName, int oggettiMancanti) {
 
 ostream &operator<<(ostream &os, const Utente &u) {
     os<<"[ Utente: "<<u.nome<<" ]"<<std::endl;
-    os<<"Liste: "<<std::endl;
-    for(auto it = u.liste.begin(); it!=u.liste.end(); it++){
-        os<<*it->second;
+    if(u.liste.empty())
+        os<<"Nessuna lista presente"<<std::endl;
+    else {
+        for (auto it = u.liste.begin(); it != u.liste.end(); it++)
+            os<< *it->second;
     }
     return os;
 }
 
-void Utente::creaLista() {
-    string nuovoNome;
-    cout<<"Inserisci il nome della nuova lista : ";
-    cin>>nuovoNome;
-    auto ptr = make_shared<ListaSpesa>(nuovoNome);
-    liste.insert(make_pair(nuovoNome,ptr));
-    ptr->subscribe(this);
-    cout<<"Lista creata con successo"<<endl;
+void Utente::creaLista(std::string nuovoNome) {
+    auto check = liste.find(nuovoNome);
+    if(check!=liste.end()){
+        cout<<"Impossibile usare '"<<nuovoNome << "' come nuovo nome , nome gia' esistente"<<endl;
+        return;
+    }
+    cout<<"Lista '"<<nuovoNome<<"' creata con successo"<<endl;
+    aggiungiLista(make_shared<ListaSpesa>(nuovoNome));
 }
 
-
-void Utente::aggiungiLista(ListaSpesa& nuovaLista) {
-    shared_ptr<ListaSpesa> ptr(&nuovaLista);
-    liste.insert(make_pair(nuovaLista.getNome(),ptr));
-    ptr->subscribe(this);
-    cout<<"Lista aggiunta con successo"<<endl;
+void Utente::aggiungiLista(std::shared_ptr<ListaSpesa> nuovaLista) {
+    auto check = liste.find(nuovaLista->getNome());
+    if(check!=liste.end()){
+        cout<<"Impossibile aggiungere la lista , nome gia' esistente"<<endl;
+        return;
+    }
+    liste.insert(make_pair(nuovaLista->getNome(),nuovaLista));
+    nuovaLista->subscribe(this);
 }
 
-void Utente::rimuoviLista() {
-    string nomeLista;
-    cout<<"Inserisci il nome della lista da rimuovere: ";
-    cin>>nomeLista;
+void Utente::rimuoviLista(std::string nomeLista) {
     auto it = liste.find(nomeLista);
     if(it!=liste.end()){
-        liste.erase(it);
-        cout<<"Lista rimossa con successo"<<endl;
+        it->second->unsubscribe(this);
+        liste.erase(nomeLista);
+        cout<<"Lista '"<<nomeLista<<"' rimossa con successo da "<<this->nome<<endl;
     }else{
-        cout<<"Lista non trovata"<<endl;
+        cout<<"Rimozione Fallita , Lista non trovata"<<endl;
     }
 }
 
-void Utente::condividiLista(Utente *condivisore) {
-    string nomeLista;
-    cout<<"Inserisci il nome della lista da condividere con "<<condivisore->getNome()<<" : ";
-    cin>>nomeLista;
+void Utente::condividiLista(shared_ptr<Utente> condivisore , std::string nomeLista) {
     auto it = liste.find(nomeLista);
     if(it!=liste.end()){
-        condivisore->aggiungiLista(*it->second);
-        cout<<"Lista condivisa con successo"<<endl;
+        condivisore->aggiungiLista(it->second);
+        cout<<this->nome<<" hai condiviso la lista '"<<nomeLista<<"' con "<<condivisore->getNome()<<endl;
     }else{
-        cout<<"Lista non trovata"<<endl;
-    }
-}
-
-void Utente::aggiungiOggettoALista() {
-    string nomeLista;
-    cout<<"Inserisci il nome della lista a cui vuoi aggiungere un oggetto: ";
-    cin>>nomeLista;
-    auto it = liste.find(nomeLista);
-    if(it!=liste.end()){
-        it->second->aggiungiOggetto();
-    }else{
-        cout<<"Lista non trovata"<<endl;
-    }
-}
-
-void Utente::cancellaOggettoDaLista() {
-    string nomeLista;
-    cout<<"Inserisci il nome della lista da cui vuoi cancellare un oggetto: ";
-    cin>>nomeLista;
-    auto it = liste.find(nomeLista);
-    if(it!=liste.end()){
-        it->second->rimuoviOggetto();
-    }else{
-        cout<<"Lista non trovata"<<endl;
-    }
-
-}
-
-void Utente::compraOggetto() {
-    string nomeLista;
-    cout<<"Inserisci il nome della lista da cui vuoi comprare un oggetto: ";
-    cin>>nomeLista;
-    auto it = liste.find(nomeLista);
-    if(it!=liste.end()){
-        it->second->compraOggetto();
-    }else{
-        cout<<"Lista non trovata"<<endl;
+        cout<<"Condivisione Fallita , Lista non trovata"<<endl;
     }
 }

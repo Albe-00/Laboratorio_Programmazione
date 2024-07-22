@@ -12,11 +12,35 @@ TEST(TestOggetto,TestCostruttore)
     ASSERT_EQ(o.getNome(),"CocaCola");
     ASSERT_EQ(o.getCategoria(),"Bibite");
     ASSERT_EQ(o.getQuantita(),4);
+    ASSERT_EQ(o.isComprato(),false);
 
     Oggetto o2("CocaCola","Bibite",-4);
     ASSERT_EQ(o2.getNome(),"CocaCola");
     ASSERT_EQ(o2.getCategoria(),"Bibite");
     ASSERT_EQ(o2.getQuantita(),4);
+    ASSERT_EQ(o2.isComprato(),false);
 
+}
+
+TEST(TestOggetto,TestSettersGetters)
+{
+    Oggetto o("CocaCola","Bibite",4);
+    o.setNome("Fanta");
+    o.setCategoria("Bibite");
+    o.setQuantita(3);
+    o.setComprato(true);
+    ASSERT_EQ(o.getNome(),"Fanta");
+    ASSERT_EQ(o.getCategoria(),"Bibite");
+    ASSERT_EQ(o.getQuantita(),3);
+    ASSERT_EQ(o.isComprato(),true);
+}
+
+TEST(TestOggetto,TestAumentaDiminuisciQuantita)
+{
+    Oggetto o("CocaCola","Bibite",4);
+    o.aumentaDiminuisciQuantita(3);
+    ASSERT_EQ(o.getQuantita(),7);
+    o.aumentaDiminuisciQuantita(-2);
+    ASSERT_EQ(o.getQuantita(),5);
 }
 

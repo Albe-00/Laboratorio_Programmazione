@@ -8,8 +8,6 @@
 
 #include "..\ObserverPattern\Observer.h"
 #include "..\ListaSpesa\ListaSpesa.h"
-#include <memory>
-#include <map>
 
 
 class Utente : public Observer{
@@ -23,17 +21,13 @@ public:
 
     string getNome() const { return nome; }
     int getNumListe() const { return liste.size(); }
+    shared_ptr<ListaSpesa> getUltimaListaAggiunta(){ return liste.rbegin()->second; };
+    shared_ptr<ListaSpesa> getLista(string nomeLista) { return liste.find(nomeLista)->second; }
 
-
-    void creaLista();
-    void aggiungiLista(ListaSpesa& nuovaLista);
-    void rimuoviLista();
-    void condividiLista(Utente* condivisore);
-
-    void aggiungiOggettoALista();
-    void cancellaOggettoDaLista();
-    void compraOggetto();
-
+    void creaLista(std::string nomeLista);
+    void aggiungiLista(std::shared_ptr<ListaSpesa> nuovaLista);
+    void rimuoviLista(std::string nomeLista);
+    void condividiLista(shared_ptr<Utente> condivisore , std::string nomeLista);
 
 private:
     std::string nome;

@@ -8,6 +8,8 @@
 #include "..\ObserverPattern\Subject.h"
 #include "..\Oggetto\Oggetto.h"
 #include <list>
+#include <memory>
+#include <map>
 
 class ListaSpesa : public Subject{
 public:
@@ -22,27 +24,17 @@ public:
 
     const int getDaComprare() const { return daComprare; }
     const int getObservers() const { return observers.size(); } //Testing
-    const std::list<Oggetto*>& getOggetti() const { return oggettiDellaLista; } //Testing
+    const int getNumOggetti() const { return oggettiDellaLista.size(); } //Testing
 
     friend std::ostream& operator<<(ostream& os, const ListaSpesa& lista);
 
-    void aggiungiOggetto(Oggetto* oggetto);
-    void aggiungiOggettoInputStream(std::istream& input = std::cin);    //Testing
-    void rimuoviOggetto(Oggetto* oggetto);
-    void rimuoviOggettoInputStream(std::istream& input = std::cin);    //Testing
-    void compraOggetto(Oggetto* oggetto);
-    void compraOggettoInputStream(std::istream& input = std::cin);    //Testing
-
-    //------------------------------------//
-    //funzioni senza parametri
-
-    void aggiungiOggetto();
-    void rimuoviOggetto();
-    void compraOggetto();
+    void aggiungiOggetto(const string nome , const string categoria , const int quantita);
+    void rimuoviOggetto(const string oggettoDaRimuovere);
+    void compraOggetto(const string oggettoDaComprare);
 private:
     string nomeLista;
     list<Observer*> observers;
-    list<Oggetto*> oggettiDellaLista;
+    map<string , shared_ptr<Oggetto>> oggettiDellaLista;
     int daComprare;
 
 };
