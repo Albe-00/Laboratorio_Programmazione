@@ -3,7 +3,7 @@
 int main(){
     map<string, shared_ptr<Utente>> utenti;
     int sceltaMenu1 = 0;
-    string nome , utenteCorrente="";
+    string nome , utenteCorrente;
     while(sceltaMenu1!=3){
         utenteCorrente="";
         system("cls");
@@ -77,23 +77,25 @@ int main(){
                         break;
                     case 3:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0 || utenti.size() == 1)
-                            cout
-                                    << "Impossibile condividere , Nessuna lista presente o utente con cui poter condividere"
-                                    << endl;
-                        else {
-                            cout << *utenti.find(nome)->second;
-                            cout << "Inserisci il nome della lista da condividere : ";
-                            cin >> nomeLista;
-                            system("cls");
-                            for (auto it = utenti.begin(); it != utenti.end(); it++) {
-                                if (it->first != nome)
-                                    cout << "-) " << it->first << endl;
-                            }
-                            cout << "Inserisci il nome dell'utente con cui condividere la lista : ";
-                            cin >> nomeUtente;
-                            utenti.find(nome)->second->condividiLista(utenti.find(nomeUtente)->second, nomeLista);
+                        if (utenti.find(nome)->second->getNumListe() == 0 ) {
+                            cout<< "Impossibile condividere , Nessuna lista presente"<< endl;
+                            break;
                         }
+                        if(utenti.size() == 1){
+                            cout<< "Impossibile condividere , Nessun utente con cui poter condividere"<< endl;
+                            break;
+                        }
+                        cout << *utenti.find(nome)->second;
+                        cout << "Inserisci il nome della lista da condividere : ";
+                        cin >> nomeLista;
+                        system("cls");
+                        for (auto it = utenti.begin(); it != utenti.end(); it++) {
+                            if (it->first != nome)
+                                cout << "-) " << it->first << endl;
+                        }
+                        cout << "Inserisci il nome dell'utente con cui condividere la lista : ";
+                        cin >> nomeUtente;
+                        utenti.find(nome)->second->condividiLista(utenti.find(nomeUtente)->second, nomeLista);
                         break;
                     case 4:
                         system("cls");
@@ -114,8 +116,7 @@ int main(){
                             cout << "Inserisci la quantita' : ";
                             int quantita;
                             cin >> quantita;
-                            utenti.find(nome)->second->getLista(nomeLista)->aggiungiOggetto(nomeOggetto, categoria,
-                                                                                            quantita);
+                            utenti.find(nome)->second->getLista(nomeLista)->aggiungiOggetto(nomeOggetto, categoria,quantita);
                         }
                         break;
                     case 5:
@@ -160,7 +161,4 @@ int main(){
             }
         }
     }
-
-
-
 }
