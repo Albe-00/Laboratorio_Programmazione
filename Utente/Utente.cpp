@@ -17,13 +17,13 @@ void Utente::update(const std::string listName, int oggettiMancanti) {
     cout<<" e' stata modificata , Oggetti da comprare rimanenti : "<<oggettiMancanti<<"\n\n";
 }
 
-ostream &operator<<(ostream &os, const Utente &u) {
-    os<<"[ Utente: "<<u.nome<<" ]"<<std::endl;
-    if(u.liste.empty())
+ostream &operator<<(ostream &os, const Utente *u) {
+    os<<"[ Utente: "<<u->nome<<" ]"<<std::endl;
+    if(u->liste.empty())
         os<<"Nessuna lista presente"<<std::endl;
     else {
-        for (auto it = u.liste.begin(); it != u.liste.end(); it++)
-            os<< *it->second;
+        for (auto it = u->liste.begin(); it != u->liste.end(); it++)
+            os<< it->second;
     }
     return os;
 }

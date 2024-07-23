@@ -17,7 +17,7 @@ public:
 
     void update(const std::string listName, int oggettiMancanti) override;
 
-    friend ostream& operator<<(ostream& os, const Utente& u);
+    friend ostream& operator<<(ostream& os, const Utente* u);
 
     string getNome() const { return nome; }
     int getNumListe() const { return liste.size(); }

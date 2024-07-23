@@ -26,7 +26,7 @@ public:
     const int getObservers() const { return observers.size(); } //Testing
     const int getNumOggetti() const { return oggettiDellaLista.size(); } //Testing
 
-    friend std::ostream& operator<<(ostream& os, const ListaSpesa& lista);
+    friend std::ostream& operator<<(ostream& os, const ListaSpesa* lista);
 
     void aggiungiOggetto(const string nome , const string categoria , const int quantita);
     void rimuoviOggetto(const string oggettoDaRimuovere);

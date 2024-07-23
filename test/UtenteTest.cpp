@@ -44,6 +44,16 @@ TEST_F(TestUtente,TestCreaLista) {
     ASSERT_EQ(lista->getNome(),"nuovaLista");
 }
 
+TEST_F(TestUtente,TestRidefinizioenOperatoreOutput) {
+    std::stringstream ss;
+    ss<<utente1;
+    ASSERT_EQ(ss.str(),"[ Utente: Alberto ]\n"
+                       "< Lista1 > - TOTALE RIMANENTI : 4\n"
+                       "1) nome : Nutella\t\tcategoria : dolce\t\tquantita : 2\t\t[ X ]\n"
+                       "2) nome : Pane\t\tcategoria : Cibo\t\tquantita : 2\t\t[ X ]\n\n"
+                       );
+}
+
 TEST_F(TestUtente,TestAggiungiLista) {
     utente2->aggiungiLista(lista1);
     ASSERT_EQ(utente2->getNumListe(),2);

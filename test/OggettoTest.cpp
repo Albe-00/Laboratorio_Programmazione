@@ -44,3 +44,17 @@ TEST(TestOggetto,TestAumentaDiminuisciQuantita)
     ASSERT_EQ(o.getQuantita(),5);
 }
 
+TEST(TestOggetto,TestRidefinizioenOperatoreOutput)
+{
+    Oggetto o("CocaCola","Bibite",4);
+    std::stringstream ss;
+    ss<<&o;
+    ASSERT_EQ(ss.str(),"nome : CocaCola\t\tcategoria : Bibite\t\tquantita : 4\t\t[ X ]\n");
+    o.setComprato(true);
+    std::stringstream ss2;
+    ss2<<&o;
+    ASSERT_EQ(ss2.str(),"nome : CocaCola\t\tcategoria : Bibite\t\tquantita : 4\t\t[ V ]\n");
+}
+
+
+

@@ -14,9 +14,14 @@ int main(){
         cin>>sceltaMenu1;
         switch (sceltaMenu1) {
             case 1:
+                if(utenti.empty()){
+                    cout << "Nessun utente registrato , procedere con la registrazione" << endl;
+                    system("pause");
+                    break;
+                }
                 cout << "Inserisci il tuo nome : ";
                 cin >> nome;
-                if (utenti.empty() || utenti.find(nome) == utenti.end()) {
+                if(utenti.find(nome) == utenti.end()) {
                     cout << "Utente non presente" << endl;
                     system("pause");
                     break;
@@ -46,7 +51,7 @@ int main(){
         if(utenteCorrente!="") {
             int sceltaMenu2 = 0;
             while (sceltaMenu2 != 7) {
-                cout << *utenti.find(nome)->second;
+                cout << utenti.find(nome)->second;
                 cout << "Cosa vuoi fare ?" << endl;
                 cout << "1) Crea una nuova lista" << endl;
                 cout << "2) Cancella una lista esistente" << endl;
@@ -69,7 +74,7 @@ int main(){
                         if (utenti.find(nome)->second->getNumListe() == 0)
                             cout << "Impossibile cancellare , Nessuna lista presente" << endl;
                         else {
-                            cout << *utenti.find(nome)->second;
+                            cout << utenti.find(nome)->second;
                             cout << "Inserisci il nome della lista da cancellare : ";
                             cin >> nomeLista;
                             utenti.find(nome)->second->rimuoviLista(nomeLista);
@@ -85,7 +90,7 @@ int main(){
                             cout<< "Impossibile condividere , Nessun utente con cui poter condividere"<< endl;
                             break;
                         }
-                        cout << *utenti.find(nome)->second;
+                        cout << utenti.find(nome)->second;
                         cout << "Inserisci il nome della lista da condividere : ";
                         cin >> nomeLista;
                         system("cls");
@@ -102,7 +107,7 @@ int main(){
                         if (utenti.find(nome)->second->getNumListe() == 0)
                             cout << "Impossibile aggiungere un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << *utenti.find(nome)->second;
+                            cout << utenti.find(nome)->second;
                             cout << "Inserisci il nome della lista a cui aggiungere l'oggetto : ";
                             cin >> nomeLista;
                             if (utenti.find(nome)->second->getLista(nomeLista) == nullptr) {
@@ -124,7 +129,7 @@ int main(){
                         if (utenti.find(nome)->second->getNumListe() == 0)
                             cout << "Impossibile rimuovere un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << *utenti.find(nome)->second;
+                            cout << utenti.find(nome)->second;
                             cout << "Inserisci il nome della lista da cui rimuovere l'oggetto : ";
                             cin >> nomeLista;
                             if (utenti.find(nome)->second->getLista(nomeLista) == nullptr) {
@@ -141,7 +146,7 @@ int main(){
                         if (utenti.find(nome)->second->getNumListe() == 0)
                             cout << "Impossibile comprare un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << *utenti.find(nome)->second;
+                            cout << utenti.find(nome)->second;
                             cout << "Inserisci il nome della lista da cui comprare l'oggetto : ";
                             cin >> nomeLista;
                             cout << "Inserisci il nome dell'oggetto da comprare : ";

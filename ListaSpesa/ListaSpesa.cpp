@@ -18,13 +18,13 @@ void ListaSpesa::notify() {
     }
 }
 
-ostream& operator<<(ostream& os, const ListaSpesa& lista){
-    os<<"< "<<lista.nomeLista<<" > - TOTALE RIMANENTI : "<<lista.daComprare<<"\n";
-    if(lista.oggettiDellaLista.empty())
+ostream& operator<<(ostream& os, const ListaSpesa* lista){
+    os<<"< "<<lista->nomeLista<<" > - TOTALE RIMANENTI : "<<lista->daComprare<<"\n";
+    if(lista->oggettiDellaLista.empty())
         os<<"Lista vuota\n\n";
     else {
         int i = 1;
-        for (auto ptr: lista.oggettiDellaLista) {
+        for (auto ptr: lista->oggettiDellaLista) {
             os << i++ << ") ";
             os << ptr.second;
         }
