@@ -27,21 +27,21 @@ public:
 
     const string &getNome() const { return nome; }
 
-    void setNome(const string &nome) { this->nome = nome; }
+    void setNome(const string &n) { nome = n; }
 
     const string &getCategoria() const { return categoria; }
 
-    void setCategoria(const string &categoria) { this->categoria = categoria; }
+    void setCategoria(const string &cat) { categoria = cat; }
 
     int getQuantita() const { return quantita; }
 
-    void setQuantita(int quantita);
+    void setQuantita(int q);
 
-    void aumentaDiminuisciQuantita(int quantita){this->quantita += quantita;}
+    void aumentaDiminuisciQuantita(int q){quantita += q;}
 
     bool isComprato() const { return comprato; }
 
-    void setComprato(bool comprato) { this->comprato = comprato; }
+    void setComprato(bool c) { comprato = c; }
 
     //-------------- OUTPUT --------------//
     friend ostream& operator<<(ostream& os, const Oggetto* o);

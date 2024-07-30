@@ -54,9 +54,10 @@ int main(){
 
         //-------------------------------------------------------------------------------
         if(!utenteCorrente.empty()) {
+            auto utenteCorrentePtr = utenti.find(utenteCorrente)->second;
             int sceltaMenu2 = 0;
             while (sceltaMenu2 != 7) {
-                cout << utenti.find(nome)->second;
+                cout << utenteCorrentePtr;
                 cout << "Cosa vuoi fare ?" << endl;
                 cout << "1) Crea una nuova lista" << endl;
                 cout << "2) Cancella una lista esistente" << endl;
@@ -72,22 +73,28 @@ int main(){
                         system("cls");
                         cout << "Inserisci il nome della lista : ";
                         cin >> nomeLista;
-                        utenti.find(nome)->second->creaLista(nomeLista);
+                        if( utenteCorrentePtr->creaLista(nomeLista))
+                            cout << "Lista creata con successo" << endl;
+                        else
+                            cout << "Lista gia' presente" << endl;
                         break;
                     case 2:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0)
+                        if (utenteCorrentePtr->getNumListe() == 0)
                             cout << "Impossibile cancellare , Nessuna lista presente" << endl;
                         else {
-                            cout << utenti.find(nome)->second;
+                            cout << utenteCorrentePtr;
                             cout << "Inserisci il nome della lista da cancellare : ";
                             cin >> nomeLista;
-                            utenti.find(nome)->second->rimuoviLista(nomeLista);
+                            if(utenteCorrentePtr->rimuoviLista(nomeLista))
+                                cout << "Lista rimossa con successo" << endl;
+                            else
+                                cout << "Lista non trovata" << endl;
                         }
                         break;
                     case 3:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0 ) {
+                        if (utenteCorrentePtr->getNumListe() == 0 ) {
                             cout<< "Impossibile condividere , Nessuna lista presente"<< endl;
                             break;
                         }
@@ -95,7 +102,7 @@ int main(){
                             cout<< "Impossibile condividere , Nessun utente con cui poter condividere"<< endl;
                             break;
                         }
-                        cout << utenti.find(nome)->second;
+                        cout << utenteCorrentePtr;
                         cout << "Inserisci il nome della lista da condividere : ";
                         cin >> nomeLista;
                         system("cls");
@@ -105,17 +112,20 @@ int main(){
                         }
                         cout << "Inserisci il nome dell'utente con cui condividere la lista : ";
                         cin >> nomeUtente;
-                        utenti.find(nome)->second->condividiLista(utenti.find(nomeUtente)->second, nomeLista);
+                        if( utenteCorrentePtr->condividiLista(utenti.find(nomeUtente)->second, nomeLista))
+                            cout << "Lista condivisa con successo" << endl;
+                        else
+                            cout << "Lista non trovata o utente non trovato" << endl;
                         break;
                     case 4:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0)
+                        if (utenteCorrentePtr->getNumListe() == 0)
                             cout << "Impossibile aggiungere un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << utenti.find(nome)->second;
+                            cout << utenteCorrentePtr;
                             cout << "Inserisci il nome della lista a cui aggiungere l'oggetto : ";
                             cin >> nomeLista;
-                            if (utenti.find(nome)->second->getLista(nomeLista) == nullptr) {
+                            if (utenteCorrentePtr->getLista(nomeLista) == nullptr) {
                                 cout << "Lista non trovata" << endl;
                                 break;
                             }
@@ -126,37 +136,50 @@ int main(){
                             cout << "Inserisci la quantita' : ";
                             int quantita;
                             cin >> quantita;
-                            utenti.find(nome)->second->getLista(nomeLista)->aggiungiOggetto(nomeOggetto, categoria,quantita);
+                            if(utenteCorrentePtr->getLista(nomeLista)->aggiungiOggetto(nomeOggetto, categoria,quantita))
+                                cout << "Oggetto aggiunto con successo" << endl;
+                            else
+                                cout << "Impossibile aggiungere l'oggetto" << endl;
                         }
                         break;
                     case 5:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0)
+                        if (utenteCorrentePtr->getNumListe() == 0)
                             cout << "Impossibile rimuovere un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << utenti.find(nome)->second;
+                            cout << utenteCorrentePtr;
                             cout << "Inserisci il nome della lista da cui rimuovere l'oggetto : ";
                             cin >> nomeLista;
-                            if (utenti.find(nome)->second->getLista(nomeLista) == nullptr) {
+                            if (utenteCorrentePtr->getLista(nomeLista) == nullptr) {
                                 cout << "Lista non trovata" << endl;
                                 break;
                             }
                             cout << "Inserisci il nome dell'oggetto : ";
                             cin >> nomeOggetto;
-                            utenti.find(nome)->second->getLista(nomeLista)->rimuoviOggetto(nomeOggetto);
+                            if( utenteCorrentePtr->getLista(nomeLista)->rimuoviOggetto(nomeOggetto))
+                                cout << "Oggetto rimosso con successo" << endl;
+                            else
+                                cout << "Oggetto non trovato" << endl;
                         }
                         break;
                     case 6:
                         system("cls");
-                        if (utenti.find(nome)->second->getNumListe() == 0)
+                        if (utenteCorrentePtr->getNumListe() == 0)
                             cout << "Impossibile comprare un oggetto , Nessuna lista presente" << endl;
                         else {
-                            cout << utenti.find(nome)->second;
+                            cout << utenteCorrentePtr;
                             cout << "Inserisci il nome della lista da cui comprare l'oggetto : ";
                             cin >> nomeLista;
+                            if (utenteCorrentePtr->getLista(nomeLista) == nullptr) {
+                                cout << "Lista non trovata" << endl;
+                                break;
+                            }
                             cout << "Inserisci il nome dell'oggetto da comprare : ";
                             cin >> nomeOggetto;
-                            utenti.find(nome)->second->getLista(nomeLista)->compraOggetto(nomeOggetto);
+                            if(utenteCorrentePtr->getLista(nomeLista)->compraOggetto(nomeOggetto))
+                                cout << "Oggetto comprato con successo" << endl;
+                            else
+                                cout << "Oggetto non trovato" << endl;
                         }
                         break;
                     case 7:

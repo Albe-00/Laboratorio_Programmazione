@@ -45,41 +45,37 @@ bool ListaSpesa::aggiungiOggetto(const string& nome , const string& categoria , 
             check->second->aumentaDiminuisciQuantita(checkedQuantita);
         else
             return false;
-
     }else {
         auto ptr = make_shared<Oggetto>(nome,categoria,quantita);
         oggettiDellaLista.insert(make_pair(nome,ptr));
     }
     daComprare+=checkedQuantita;
-    cout<<"Oggetto aggiunto\n";
     notify();
     return true;
 }
 
 bool ListaSpesa::rimuoviOggetto(const string& oggettoDaRimuovere) {
     auto check = oggettiDellaLista.find(oggettoDaRimuovere);
-    if(check==oggettiDellaLista.end()){
+    if(check==oggettiDellaLista.end())
         return false;
-    }else{
-        daComprare-=check->second->getQuantita();
-        oggettiDellaLista.erase(check);
-        cout<<oggettoDaRimuovere<<" rimosso\n";
-        notify();
-        return true;
-    }
+
+    daComprare-=check->second->getQuantita();
+    oggettiDellaLista.erase(check);
+    notify();
+    return true;
+
 }
 
 bool ListaSpesa::compraOggetto(const string& oggettoDaComprare) {
     auto check = oggettiDellaLista.find(oggettoDaComprare);
-    if(check==oggettiDellaLista.end()){
+    if(check==oggettiDellaLista.end())
         return false;
-    }else {
-        check->second->setComprato(true);
-        daComprare -= check->second->getQuantita();
-        cout<<oggettoDaComprare<<" comprato\n";
-        notify();
-        return true;
-    }
+
+    check->second->setComprato(true);
+    daComprare -= check->second->getQuantita();
+    notify();
+    return true;
+
 }
 
 

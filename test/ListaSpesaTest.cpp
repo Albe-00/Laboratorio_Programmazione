@@ -9,11 +9,9 @@
 class TestListaSpesa : public ::testing::Test{
 protected:
     void SetUp() override{
-        cout<<"-> SetUp-ListaSpesa"<<endl;
         lista1->aggiungiOggetto("Nutella", "dolce", 2);
         lista1->aggiungiOggetto("Pane", "Cibo", 2);
         lista1->aggiungiOggetto("CocaCola", "Bevanda", 1);
-        cout<<"<- Fine SetUp-Utente"<<endl;
     }
     ListaSpesa* lista1 = new ListaSpesa("Lista1");
 };
@@ -38,6 +36,8 @@ TEST_F (TestListaSpesa, TestRidefinizioenOperatoreOutput) {
 
 
 TEST_F(TestListaSpesa, TestAggiungiOggetto) {
+    auto utente1 = new Utente("Alberto");
+    lista1->subscribe(utente1);
     ASSERT_EQ(lista1->aggiungiOggetto("Fanta", "Bevanda", 1) , true);       //aggiungo un nuovo oggetto
     ASSERT_EQ(lista1->getDaComprare(),6);                                   //5+1=6
     ASSERT_EQ(lista1->aggiungiOggetto("Fanta", "Maglietta", 1) , false);    //oggetto con stesso nome ma categoria diversa
@@ -47,6 +47,8 @@ TEST_F(TestListaSpesa, TestAggiungiOggetto) {
 }
 
 TEST_F(TestListaSpesa, TestRimuoviOggetto) {
+    auto utente1 = new Utente("Alberto");
+    lista1->subscribe(utente1);
     ASSERT_EQ(lista1->rimuoviOggetto("Nutella") , true);    //rimuovo un oggetto
     ASSERT_EQ(lista1->getDaComprare(),3);                   //5-2=3
     ASSERT_EQ(lista1->rimuoviOggetto("iPad") , false);      //provo a rimuovere un oggetto non presente
@@ -54,6 +56,8 @@ TEST_F(TestListaSpesa, TestRimuoviOggetto) {
 }
 
 TEST_F(TestListaSpesa, TestCompraOggetto) {
+    auto utente1 = new Utente("Alberto");
+    lista1->subscribe(utente1);
     ASSERT_EQ(lista1->compraOggetto("Nutella") , true);     //compro un oggetto
     ASSERT_EQ(lista1->getDaComprare(),3);                   //5-2=3
     ASSERT_EQ(lista1->compraOggetto("iPad") , false);       //provo a comprare un oggetto non presente

@@ -4,11 +4,11 @@
 
 #include "Oggetto.h"
 
-void Oggetto::setQuantita(int quantita) {
-    if(quantita>=0)
-        this->quantita=quantita;
+void Oggetto::setQuantita(int q) {
+    if(q>=0)
+        quantita=q;
     else
-        this->quantita=-quantita;
+        quantita=-q;
 }
 
 ostream &operator<<(ostream &os, const Oggetto *o) {

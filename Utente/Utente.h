@@ -21,7 +21,7 @@ public:
 
     friend ostream& operator<<(ostream& os, const Utente* u);
 
-    string getNome() const { return nome; }     //Testing
+    const string& getNome() const { return nome; }     //Testing
     int getNumListe() const { return int(liste.size()); }   //Testing
     shared_ptr<ListaSpesa> getUltimaListaAggiunta(){ return liste.rbegin()->second; };  //Testing
     shared_ptr<ListaSpesa> getLista(const string& nomeLista) { return liste.find(nomeLista)->second; }

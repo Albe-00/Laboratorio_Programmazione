@@ -30,21 +30,18 @@ ostream &operator<<(ostream &os, const Utente *u) {
 
 bool Utente::creaLista(const string& nuovoNome) {
     auto check = liste.find(nuovoNome);
-    if(check!=liste.end()){
-        cout<<"Impossibile usare '"<<nuovoNome << "' come nuovo nome , nome gia' esistente"<<endl;
+    if(check!=liste.end())
         return false;
-    }
-    cout<<"Lista '"<<nuovoNome<<"' creata con successo"<<endl;
+
     aggiungiLista(make_shared<ListaSpesa>(nuovoNome));
     return true;
 }
 
 bool Utente::aggiungiLista(const shared_ptr<ListaSpesa>& nuovaLista) {
     auto check = liste.find(nuovaLista->getNome());
-    if(check!=liste.end()){
-        cout<<"Impossibile aggiungere la lista , nome gia' esistente"<<endl;
+    if(check!=liste.end())
         return false;
-    }
+
     liste.insert(make_pair(nuovaLista->getNome(),nuovaLista));
     nuovaLista->subscribe(this);
     return true;
@@ -52,29 +49,21 @@ bool Utente::aggiungiLista(const shared_ptr<ListaSpesa>& nuovaLista) {
 
 bool Utente::rimuoviLista(const string& nomeLista) {
     auto it = liste.find(nomeLista);
-    if(it!=liste.end()){
-        it->second->unsubscribe(this);
-        liste.erase(nomeLista);
-        cout<<"Lista '"<<nomeLista<<"' rimossa con successo da "<<this->nome<<endl;
-        return true;
-    }else{
-        cout<<"Rimozione Fallita , Lista non trovata"<<endl;
+    if(it==liste.end())
         return false;
-    }
+
+    it->second->unsubscribe(this);
+    liste.erase(nomeLista);
+    return true;
 }
 
 bool Utente::condividiLista(const shared_ptr<Utente>& condivisore ,const string& nomeLista) {
     auto it = liste.find(nomeLista);
-    if(it!=liste.end()){
-        if(condivisore->aggiungiLista(it->second)){
-            cout<<this->nome<<" hai condiviso la lista '"<<nomeLista<<"' con "<<condivisore->getNome()<<endl;
-            return true;
-        }else{
-            cout<<"Condivisione Fallita , lista con quel nome gia' presente nel condivisore"<<endl;
-            return false;
-        }
-    }else{
-        cout<<"Condivisione Fallita , Lista non trovata"<<endl;
+    if(it==liste.end())
         return false;
-    }
+
+    if(condivisore->aggiungiLista(it->second))
+        return true;
+    else
+        return false;
 }

@@ -9,7 +9,6 @@
 class TestUtente : public ::testing::Test{
 protected:
     void SetUp() override{
-        cout<<"-> SetUp-Utente"<<endl;
         lista1->aggiungiOggetto("Nutella", "dolce", 2);
         lista1->aggiungiOggetto("Pane", "Cibo", 2);
 
@@ -19,7 +18,6 @@ protected:
         utente1->aggiungiLista(lista1);
         utente1->aggiungiLista(lista3);
         utente2->aggiungiLista(lista2);
-        cout<<"<- Fine SetUp-Utente"<<endl;
     }
 
     shared_ptr<ListaSpesa> lista1 = make_shared<ListaSpesa>("Lista1");
