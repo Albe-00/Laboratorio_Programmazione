@@ -24,7 +24,7 @@ ostream& operator<<(ostream& os, const ListaSpesa* lista){
         os<<"Lista vuota\n\n";
     else {
         int i = 1;
-        for (auto ptr: lista->oggettiDellaLista) {
+        for (auto& ptr: lista->oggettiDellaLista) {
             os << i++ << ") ";
             os << ptr.second;
         }
@@ -33,7 +33,7 @@ ostream& operator<<(ostream& os, const ListaSpesa* lista){
     return os;
 }
 
-void ListaSpesa::aggiungiOggetto(const std::string nome, const std::string categoria, const int quantita) {
+bool ListaSpesa::aggiungiOggetto(const string& nome , const string& categoria , int quantita) {
     int checkedQuantita = quantita;
     if(quantita<0){
         checkedQuantita*=-1;
@@ -43,11 +43,9 @@ void ListaSpesa::aggiungiOggetto(const std::string nome, const std::string categ
     if(check!=oggettiDellaLista.end()){
         if(categoria==check->second->getCategoria())
             check->second->aumentaDiminuisciQuantita(checkedQuantita);
-        else{
-            cout<<"Impossibile Aggiungere l'oggetto ( "<<nome;
-            cout<<","<<categoria<<","<<quantita<<")\n";
-            return;
-        }
+        else
+            return false;
+
     }else {
         auto ptr = make_shared<Oggetto>(nome,categoria,quantita);
         oggettiDellaLista.insert(make_pair(nome,ptr));
@@ -55,29 +53,32 @@ void ListaSpesa::aggiungiOggetto(const std::string nome, const std::string categ
     daComprare+=checkedQuantita;
     cout<<"Oggetto aggiunto\n";
     notify();
+    return true;
 }
 
-void ListaSpesa::rimuoviOggetto(const string oggettoDaRimuovere) {
+bool ListaSpesa::rimuoviOggetto(const string& oggettoDaRimuovere) {
     auto check = oggettiDellaLista.find(oggettoDaRimuovere);
     if(check==oggettiDellaLista.end()){
-        cout<<"Impossibile rimuovere "<<oggettoDaRimuovere<<" , non e' presente nella lista"<<endl;
+        return false;
     }else{
         daComprare-=check->second->getQuantita();
         oggettiDellaLista.erase(check);
         cout<<oggettoDaRimuovere<<" rimosso\n";
         notify();
+        return true;
     }
 }
 
-void ListaSpesa::compraOggetto(const string oggettoDaComprare) {
+bool ListaSpesa::compraOggetto(const string& oggettoDaComprare) {
     auto check = oggettiDellaLista.find(oggettoDaComprare);
     if(check==oggettiDellaLista.end()){
-        cout<<"Impossibile comprare "<<oggettoDaComprare<<", non e' presente nella lista"<<endl;
+        return false;
     }else {
         check->second->setComprato(true);
         daComprare -= check->second->getQuantita();
         cout<<oggettoDaComprare<<" comprato\n";
         notify();
+        return true;
     }
 }
 

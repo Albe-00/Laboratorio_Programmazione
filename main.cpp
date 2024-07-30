@@ -45,10 +45,15 @@ int main(){
             case 3:
                 cout<<"A presto , Spegnimento ..."<<endl;
                 return 0;
+            default:
+                cout<<"Scelta non valida"<<endl;
+                system("pause");
+                system("cls");
+                break;
         }
 
         //-------------------------------------------------------------------------------
-        if(utenteCorrente!="") {
+        if(!utenteCorrente.empty()) {
             int sceltaMenu2 = 0;
             while (sceltaMenu2 != 7) {
                 cout << utenti.find(nome)->second;
@@ -94,9 +99,9 @@ int main(){
                         cout << "Inserisci il nome della lista da condividere : ";
                         cin >> nomeLista;
                         system("cls");
-                        for (auto it = utenti.begin(); it != utenti.end(); it++) {
-                            if (it->first != nome)
-                                cout << "-) " << it->first << endl;
+                        for (auto& it: utenti) {
+                            if (it.first != nome)
+                                cout << "-) " << it.first << endl;
                         }
                         cout << "Inserisci il nome dell'utente con cui condividere la lista : ";
                         cin >> nomeUtente;

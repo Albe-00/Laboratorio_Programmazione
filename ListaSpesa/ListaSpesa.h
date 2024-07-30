@@ -10,11 +10,12 @@
 #include <list>
 #include <memory>
 #include <map>
+#include <utility>
 
 class ListaSpesa : public Subject{
 public:
-    ListaSpesa(string nome):nomeLista(nome),daComprare(0){};
-    ~ListaSpesa()=default;
+    explicit ListaSpesa(string  nome):nomeLista(std::move(nome)),daComprare(0){};
+    ~ListaSpesa() override =default;
 
     void subscribe(Observer* o) override;
     void unsubscribe(Observer* o) override;
@@ -22,15 +23,15 @@ public:
 
     const string &getNome() const{ return nomeLista;};
 
-    const int getDaComprare() const { return daComprare; }
-    const int getObservers() const { return observers.size(); } //Testing
-    const int getNumOggetti() const { return oggettiDellaLista.size(); } //Testing
 
-    friend std::ostream& operator<<(ostream& os, const ListaSpesa* lista);
+    int getDaComprare() const { return daComprare; }    //Testing
+    int getObservers() const { return int(observers.size()); } //Testing
 
-    void aggiungiOggetto(const string nome , const string categoria , const int quantita);
-    void rimuoviOggetto(const string oggettoDaRimuovere);
-    void compraOggetto(const string oggettoDaComprare);
+    friend ostream& operator<<(ostream& os, const ListaSpesa* lista);
+
+    bool aggiungiOggetto(const string& nome , const string& categoria , int quantita);
+    bool rimuoviOggetto(const string& oggettoDaRimuovere);
+    bool compraOggetto(const string& oggettoDaComprare);
 private:
     string nomeLista;
     list<Observer*> observers;

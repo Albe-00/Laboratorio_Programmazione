@@ -4,7 +4,6 @@
 
 #include "gtest/gtest.h"
 #include"../Utente/Utente.h"
-#include <sstream>
 
 
 class TestListaSpesa : public ::testing::Test{
@@ -39,26 +38,34 @@ TEST_F (TestListaSpesa, TestRidefinizioenOperatoreOutput) {
 
 
 TEST_F(TestListaSpesa, TestAggiungiOggetto) {
-    lista1->aggiungiOggetto("Fanta", "Bevanda", 1);   //5+1=6
-    ASSERT_EQ(lista1->getDaComprare(),6);
+    ASSERT_EQ(lista1->aggiungiOggetto("Fanta", "Bevanda", 1) , true);       //aggiungo un nuovo oggetto
+    ASSERT_EQ(lista1->getDaComprare(),6);                                   //5+1=6
+    ASSERT_EQ(lista1->aggiungiOggetto("Fanta", "Maglietta", 1) , false);    //oggetto con stesso nome ma categoria diversa
+    ASSERT_EQ(lista1->getDaComprare(),6);                                   //6+0=6
+    ASSERT_EQ(lista1->aggiungiOggetto("Fanta", "Bevanda", 1) , true);       //incremento la quantita' di un oggetto gia' presente
+    ASSERT_EQ(lista1->getDaComprare(),7);                                   //6+1=7
 }
 
 TEST_F(TestListaSpesa, TestRimuoviOggetto) {
-    lista1->rimuoviOggetto("Nutella");    //5-2=3
-    ASSERT_EQ(lista1->getNumOggetti(),2);
-    ASSERT_EQ(lista1->getDaComprare(),3);
+    ASSERT_EQ(lista1->rimuoviOggetto("Nutella") , true);    //rimuovo un oggetto
+    ASSERT_EQ(lista1->getDaComprare(),3);                   //5-2=3
+    ASSERT_EQ(lista1->rimuoviOggetto("iPad") , false);      //provo a rimuovere un oggetto non presente
+    ASSERT_EQ(lista1->getDaComprare(),3);                   //3-0=3
 }
 
 TEST_F(TestListaSpesa, TestCompraOggetto) {
-    lista1->compraOggetto("Nutella");    //5-2=3
-    ASSERT_EQ(lista1->getDaComprare(),3);
+    ASSERT_EQ(lista1->compraOggetto("Nutella") , true);     //compro un oggetto
+    ASSERT_EQ(lista1->getDaComprare(),3);                   //5-2=3
+    ASSERT_EQ(lista1->compraOggetto("iPad") , false);       //provo a comprare un oggetto non presente
+    ASSERT_EQ(lista1->getDaComprare(),3);                   //3-0=3
 }
 
 TEST_F(TestListaSpesa, TestObservers) {
-    Utente* utente1 = new Utente("Alberto");
-    Utente* utente2 = new Utente("Giorgio");
+    auto utente1 = new Utente("Alberto");
+    auto utente2 = new Utente("Giorgio");
     lista1->subscribe(utente1);
     lista1->subscribe(utente2);
+    ASSERT_EQ(lista1->compraOggetto("Nutella") , true);     //compro un oggetto e notifico gli utenti
     ASSERT_EQ(lista1->getObservers(),2);
     lista1->unsubscribe(utente1);
     ASSERT_EQ(lista1->getObservers(),1);

@@ -8,13 +8,14 @@
 
 #include <string>
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
 class Oggetto{
 public:
     //-------------- COSTRUTTORE E DISTRUTTORE --------------//
-    Oggetto(string n ,string c, int q=1): nome(n), categoria(c), comprato(false){
+    Oggetto(string  n ,string  c, int q=1): nome(std::move(n)), categoria(std::move(c)), comprato(false){
         if(q>=0)
             quantita=q;
         else
@@ -34,7 +35,7 @@ public:
 
     int getQuantita() const { return quantita; }
 
-    void setQuantita(int quantita) { this->quantita = quantita; }
+    void setQuantita(int quantita);
 
     void aumentaDiminuisciQuantita(int quantita){this->quantita += quantita;}
 

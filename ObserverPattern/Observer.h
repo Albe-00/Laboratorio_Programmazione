@@ -13,7 +13,7 @@ class Observer {
 public:
     virtual ~Observer() {}
 
-    virtual void update(const std::string nomeLista , int oggettiMancanti) =0;
+    virtual void update(const std::string& nomeLista , int oggettiMancanti) =0;
 
 };
 

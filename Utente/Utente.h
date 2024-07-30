@@ -6,32 +6,34 @@
 #define LABORATORIO_PROGRAMMAZIONE_UTENTE_H
 
 
+#include <utility>
+
 #include "..\ObserverPattern\Observer.h"
 #include "..\ListaSpesa\ListaSpesa.h"
 
 
 class Utente : public Observer{
 public:
-    Utente(std::string nome):nome(nome){};
+    explicit Utente(string nome):nome(std::move(nome)){};
     ~Utente() override;
 
-    void update(const std::string listName, int oggettiMancanti) override;
+    void update(const string& nomeLista, int oggettiMancanti) override;
 
     friend ostream& operator<<(ostream& os, const Utente* u);
 
-    string getNome() const { return nome; }
-    int getNumListe() const { return liste.size(); }
-    shared_ptr<ListaSpesa> getUltimaListaAggiunta(){ return liste.rbegin()->second; };
-    shared_ptr<ListaSpesa> getLista(string nomeLista) { return liste.find(nomeLista)->second; }
+    string getNome() const { return nome; }     //Testing
+    int getNumListe() const { return int(liste.size()); }   //Testing
+    shared_ptr<ListaSpesa> getUltimaListaAggiunta(){ return liste.rbegin()->second; };  //Testing
+    shared_ptr<ListaSpesa> getLista(const string& nomeLista) { return liste.find(nomeLista)->second; }
 
-    void creaLista(std::string nomeLista);
-    void aggiungiLista(std::shared_ptr<ListaSpesa> nuovaLista);
-    void rimuoviLista(std::string nomeLista);
-    void condividiLista(shared_ptr<Utente> condivisore , std::string nomeLista);
+    bool creaLista(const string& nuovoNome);
+    bool aggiungiLista(const shared_ptr<ListaSpesa>& nuovaLista);
+    bool rimuoviLista(const string& nomeLista);
+    bool condividiLista(const shared_ptr<Utente>& condivisore , const string& nomeLista);
 
 private:
-    std::string nome;
-    std::map<string, shared_ptr<ListaSpesa>> liste;
+    string nome;
+    map<string, shared_ptr<ListaSpesa>> liste;
 };
 
 

@@ -17,6 +17,7 @@ protected:
         lista2->aggiungiOggetto("ipad", "Tablet", 1);
 
         utente1->aggiungiLista(lista1);
+        utente1->aggiungiLista(lista3);
         utente2->aggiungiLista(lista2);
         cout<<"<- Fine SetUp-Utente"<<endl;
     }
@@ -32,16 +33,21 @@ protected:
 
 
 TEST_F(TestUtente,TestConstructor) {
-    Utente* nuovoUtente = new Utente("Alberto");
+    auto nuovoUtente = new Utente("Alberto");
+    string nome = nuovoUtente->getNome();
     ASSERT_EQ(nuovoUtente->getNome(),"Alberto");
     ASSERT_EQ(nuovoUtente->getNumListe(),0);
 }
 
 TEST_F(TestUtente,TestCreaLista) {
-    utente1->creaLista("nuovaLista");
-    ASSERT_EQ(utente1->getNumListe(),2);
+    ASSERT_EQ(utente1->creaLista("nuovaLista") , true);                 //creo una nuova lista
+
     shared_ptr<ListaSpesa> lista = utente1->getUltimaListaAggiunta();
     ASSERT_EQ(lista->getNome(),"nuovaLista");
+    ASSERT_EQ(utente1->getNumListe(),3);                              //2+1=3
+
+    ASSERT_EQ(utente1->creaLista("nuovaLista") , false);                //provo a creare una lista con lo stesso nome
+    ASSERT_EQ(utente1->getNumListe(),3);                              //3+0=3
 }
 
 TEST_F(TestUtente,TestRidefinizioenOperatoreOutput) {
@@ -51,28 +57,44 @@ TEST_F(TestUtente,TestRidefinizioenOperatoreOutput) {
                        "< Lista1 > - TOTALE RIMANENTI : 4\n"
                        "1) nome : Nutella\t\tcategoria : dolce\t\tquantita : 2\t\t[ X ]\n"
                        "2) nome : Pane\t\tcategoria : Cibo\t\tquantita : 2\t\t[ X ]\n\n"
+                       "< Lista3 > - TOTALE RIMANENTI : 0\n"
+                       "Lista vuota\n\n"
                        );
 }
 
 TEST_F(TestUtente,TestAggiungiLista) {
-    utente2->aggiungiLista(lista1);
-    ASSERT_EQ(utente2->getNumListe(),2);
+    auto nuovaLista = make_shared<ListaSpesa>("nuovaLista");
+    ASSERT_EQ(utente1->aggiungiLista(nuovaLista) , true);       //aggiungo una lista
+    ASSERT_EQ(utente1->getNumListe(),3);                        //2+1=3
+    ASSERT_EQ(utente1->aggiungiLista(nuovaLista) , false);      //provo ad aggiungere una lista con lo stesso nome
+                                                                //(non dipende dal contenuto della lista passata ma solo dal nome )
+                                                                //(in quanto chiave della mappa)
+    ASSERT_EQ(utente1->getNumListe(),3);                        //3+0=3
 }
 
 TEST_F(TestUtente,TestRimuoviLista) {
-    utente1->rimuoviLista("Lista1");
-    ASSERT_EQ(utente1->getNumListe(),0);
+    ASSERT_EQ(utente1->rimuoviLista("Lista1") , true);      //rimuovo una lista
+    ASSERT_EQ(utente1->getNumListe(),1);                    //2-1=1
+    ASSERT_EQ(utente1->rimuoviLista("Lista1") , false);     //provo a rimuovere una lista non presente
+    ASSERT_EQ(utente1->getNumListe(),1);                    //1-0=1
+
 }
 
 TEST_F(TestUtente,TestCondividiLista) {
-    string nomeLista="Lista1";
-    utente1->condividiLista(utente2,nomeLista);
-    ASSERT_EQ(utente1->getNumListe(),1);
-    ASSERT_EQ(utente2->getNumListe(),2);
-    shared_ptr<ListaSpesa> lista = utente1->getUltimaListaAggiunta();
-    ASSERT_EQ(lista->getNome(),nomeLista);
-
-    utente2->rimuoviLista(nomeLista);
-    ASSERT_EQ(utente1->getNumListe(),1);
+    ASSERT_EQ(utente1->condividiLista(utente2,"ListaNonPresente"), false);  //provo a condividere una lista non presente
+                                                                            //nell'utente1
+    ASSERT_EQ(utente1->getNumListe(),2);
     ASSERT_EQ(utente2->getNumListe(),1);
+
+
+    ASSERT_EQ(utente1->condividiLista(utente2,"Lista1"), true);     //condivido la lista1 con l'utente2
+    ASSERT_EQ(utente1->getNumListe(),2);
+    ASSERT_EQ(utente2->getNumListe(),2);
+
+    utente2->creaLista("Lista1");
+    ASSERT_EQ(utente1->condividiLista(utente2,"Lista1"), false);    //provo a condividere una lista con nome gia' esistente
+                                                                    //nell'utente2
+    ASSERT_EQ(utente1->getNumListe(),2);
+    ASSERT_EQ(utente2->getNumListe(),2);
+
 }
